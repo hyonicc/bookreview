@@ -68,6 +68,7 @@
 
             function showReview() {
                 // 1. 리뷰 목록을 서버에 요청하기
+
                 // 2. 요청 성공 여부 확인하기
                 // 3. 요청 성공했을 때 리뷰를 올바르게 화면에 나타내기
                 $.ajax({
@@ -76,12 +77,31 @@
                     data: {},
                     success: function (response) {
                         if (response["result"] == "success") {
-                            alert(response["msg"]);
+                            // alert(response["msg"]);
+                            let reviews = response['reviews']
+                            for (let i=0; i < reviews.length; i++) {
+                                let review = reviews[i];
+                                let title = review['title'];
+                                let author = review['author'];
+                                let bookReview = review['review'];
+
+                                makeCard(title, author, bookReview);
+                            }
                         } else {
                             alert("리뷰를 받아오지 못했습니다");
                         }
                     }
                 })
+            }
+
+            function makeCard(title, author, review) {
+                let tempHTML = `<tr>
+                        <td>${title}</td>
+                        <td>${author}</td>
+                        <td>${review}</td>
+                    </tr>`
+                $('#reviews-box').append(tempHTML);
+
             }
 
             function validateLength(obj) {
